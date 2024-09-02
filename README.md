@@ -1,98 +1,130 @@
 # California Housing Price Prediction
 
-This project is aimed at predicting housing prices in California using various machine learning models. The dataset used for this project is derived from the famous California Housing dataset, which contains information about different housing attributes and their corresponding median values.
+This repository contains a machine learning project aimed at predicting California housing prices using the dataset provided by the [Kaggle Playground Series - Season 3, Episode 1](https://www.kaggle.com/competitions/playground-series-s3e1).
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Dataset](#dataset)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Exploratory Data Analysis](#exploratory-data-analysis)
+- [Model Training](#model-training)
+- [Model Evaluation](#model-evaluation)
+- [Submission](#submission)
+- [Results](#results)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Overview
+
+The goal of this project is to build a robust machine-learning model to predict median house values in California districts based on several features. The project explores various modeling techniques, including linear regression, decision trees, bagging, gradient boosting, and XGBoost, combined with hyperparameter optimization using RandomizedSearchCV and GridSearchCV.
+
+## Dataset
+
+The dataset used in this project is provided by the [Kaggle Playground Series](https://www.kaggle.com/competitions/playground-series-s3e1). It contains features like `longitude`, `latitude`, `housing_median_age`, `total_rooms`, `total_bedrooms`, `population`, `households`, `median_income`, and the target variable `median_house_value`.
+
+### Files:
+- `train.csv`: Training dataset containing features and target variables.
+- `test.csv`: Test dataset to make predictions for submission.
+- `sample_submission.csv`: Sample submission file format.
 
 ## Project Structure
 
-The project is organized into the following directories and files:
+The repository is organized as follows:
 
 ```plaintext
-S3E1 CALIFORNIA HOUSING/
-│
-├── docs/
-│   └── Notes.md                      # Markdown file for keeping track of notes and observations
-│
-├── env/                              # Python virtual environment directory (not included in the repo)
-│
-├── input/
-│   ├── sample_submission.csv         # Sample submission file for Kaggle competition
-│   ├── test.csv                      # Test dataset for making predictions
-│   ├── train_folds.csv               # Training dataset with k-fold splits
-│   └── train.csv                     # Original training dataset
-│
-├── notebooks/
-│   ├── eda.ipynb                     # Jupyter notebook for Exploratory Data Analysis (EDA)
-│   ├── explore_data.ipynb            # Notebook for exploring data and feature engineering
-│   └── linear_regression.ipynb       # Notebook for building and testing Linear Regression model
-│
-├── src/                              # Source code for model training and evaluation
-│   ├── analyze.py                    # Script for analyzing model performance
-│   ├── bagging.py                    # Script for training a Bagging Regressor model
-│   ├── base_reg.py                   # Script for training a baseline regression model
-│   ├── create_fold.py                # Script for creating stratified k-folds
-│   ├── dtr.py                        # Script for training a Decision Tree Regressor model
-│   ├── elasticnet.py                 # Script for training an Elastic Net Regressor model
-│   ├── gradient_gridsearch.py        # Script for training Gradient Boosting with GridSearchCV
-│   ├── gradient_randomizedsearch.py  # Script for training Gradient Boosting with RandomizedSearchCV
-│   ├── gradient.py                   # Script for training a basic Gradient Boosting Regressor
-│   ├── l1l2.py                       # Script for training Ridge and Lasso models
-│   ├── logtransform_reg.py           # Script for regression after log-transforming the target
-│   ├── temp.py                       # Temporary script for testing various models and approaches
-│   ├── xgb_random.py                 # Script for training XGBoost with RandomizedSearchCV
-│   └── xgb.py                        # Script for training a basic XGBoost model
-│
-└── .gitignore                        # Git ignore file to exclude unnecessary files from the repository
+├── docs
+│   └── Notes.md            # Notes and findings during the project
+├── env                     # Virtual environment setup (if applicable)
+├── input
+│   ├── sample_submission.csv
+│   ├── test.csv
+│   ├── train_folds.csv     # Training data split into folds (generated)
+│   └── train.csv           # Original training data
+├── notebooks
+│   ├── eda.ipynb           # Exploratory data analysis notebook
+│   ├── explore_data.ipynb  # Additional data exploration
+│   └── linear_regression.ipynb  # Linear Regression trials
+├── src
+│   ├── analyze.py          # Scripts for data analysis
+│   ├── bagging.py          # Bagging Regressor implementation
+│   ├── base_reg.py         # Base model implementation (Linear Regression)
+│   ├── create_fold.py      # Script to create folds for cross-validation
+│   ├── dtr.py              # Decision Tree Regressor implementation
+│   ├── elasticnet.py       # Elastic Net Regression implementation
+│   ├── gradient.py         # Gradient Boosting implementation
+│   ├── gradient_gridsearch.py  # Gradient Boosting with Grid Search
+│   ├── gradient_randomizedsearch.py # Gradient Boosting with Randomized Search
+│   ├── logtransform_reg.py # Linear Regression with log transformation
+│   ├── temp.py             # Temporary script for testing
+│   ├── xgb.py              # XGBoost Regressor implementation
+│   ├── xgb_random.py       # XGBoost Regressor with Randomized Search
+└── .gitignore              # Git ignore file
 ```
 
-## Getting Started
+## Installation
 
-### Prerequisites
+To run this project locally, follow these steps:
 
-- Python 3.7 or higher
-- Virtual environment (optional but recommended)
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/surajwate/S3E1-California-Housing.git
+   cd S3E1-California-Housing
+   ```
 
-### Installing Dependencies
+2. **Set up a virtual environment** (optional but recommended):
+   ```bash
+   python -m venv env
+   source env/bin/activate  # On Windows use `env\Scripts\activate`
+   ```
 
-```bash
-pip install -r requirements.txt
-```
+3. **Install the required packages**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-If you don't have a `requirements.txt` file, you can generate one using:
+## Exploratory Data Analysis
 
-```bash
-pip freeze > requirements.txt
-```
+Initial data exploration and visualization are performed using the notebooks located in the `notebooks/` directory. The `eda.ipynb` provides insights into the distribution of features, correlation with the target variable, and potential outliers.
 
-### Running the Project
+## Model Training
 
-1. **Exploratory Data Analysis (EDA)**: Start by exploring the dataset using the `notebooks/eda.ipynb` notebook. This will give you insights into the data distribution, relationships between features, and potential feature engineering steps.
+### Cross-Validation
 
-2. **Preprocessing**: Use the `src/create_fold.py` script to create stratified k-folds for cross-validation. This ensures that the target variable is distributed evenly across folds.
+The dataset is split into 5 folds using stratified k-fold cross-validation. The folds are generated using the `create_fold.py` script, which ensures that the distribution of the target variable is preserved across all folds.
 
-3. **Model Training**: You can experiment with different models using the scripts in the `src/` directory. For example, to train a Gradient Boosting model with RandomizedSearchCV, run:
+### Models Implemented
 
-    ```bash
-    python src/gradient_randomizedsearch.py
-    ```
+1. **Linear Regression**: Baseline model, implemented in `base_reg.py`.
+2. **Decision Tree Regressor**: Implemented in `dtr.py`.
+3. **Bagging Regressor**: Implemented in `bagging.py` with Decision Tree as the base estimator.
+4. **Gradient Boosting Regressor**: Implemented in `gradient.py`.
+5. **XGBoost Regressor**: Implemented in `xgb.py` and further tuned using RandomizedSearchCV in `xgb_random.py`.
+6. **Elastic Net Regression**: Implemented in `elasticnet.py`.
 
-4. **Evaluation**: After training the models, evaluate their performance on the test set using the `src/analyze.py` script.
+### Hyperparameter Tuning
 
-5. **Submission**: Once satisfied with the model's performance, use the best-performing model to generate predictions on the test set (`input/test.csv`) and submit the predictions to the Kaggle competition using the format provided in `input/sample_submission.csv`.
+- **Randomized Search**: Implemented in `xgb_random.py` and `gradient_randomizedsearch.py`.
+- **Grid Search**: Implemented in `gradient_gridsearch.py` (used for detailed hyperparameter tuning).
+
+## Model Evaluation
+
+Models are evaluated using RMSE (Root Mean Squared Error) on each fold, and the average RMSE across all folds is reported. Detailed evaluation results for each model are logged in the console and saved in the respective scripts.
+
+## Submission
+
+Once the best model is identified, it is trained on the full dataset, and predictions are generated for the test set. These predictions are then submitted to the Kaggle competition.
 
 ## Results
 
-This section will be updated with the results of the different models and the best-performing model's configuration.
+- The best model so far is the XGBoost Regressor with hyperparameter tuning using RandomizedSearchCV, achieving an average RMSE of **0.5618** across the folds.
+- More detailed results are recorded in the individual scripts and the `docs/Notes.md` file.
+
+## Contributing
+
+Contributions are welcome! If you have suggestions or improvements, feel free to create a pull request or open an issue.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Kaggle for providing the dataset.
-- The Scikit-learn and XGBoost teams for the powerful machine learning libraries.
-- The open-source community for continuous improvements and support.
-
-## Contributions
-
-Contributions are welcome! Please fork the repository and create a pull request with your proposed changes.
