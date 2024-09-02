@@ -148,3 +148,32 @@ Fold=3, RMSE=0.9064692591388754
 Fold=4, RMSE=0.9209086297283678
 Average RMSE using kmeans for binning the MedHouseVal: 0.9131165353834809
 ```
+
+Between Ridge and Lasso, Ridge Regression has a lower RMSE compared to Lasso Regression. This is expected as Lasso Regression tends to perform feature selection by setting some coefficients to zero, which may not be ideal in this case.
+
+## Setting 4: Elastic Net Regression with Grid Search
+
+**File**: `elasticnet.py`
+
+**Preprocessing**:
+
+- Applied Log Transformation on Target Variable
+- Standard Scaling on all features
+
+**Results**:
+
+```bash
+Best parameters: {'alpha': 0.1, 'l1_ratio': 0.1, 'max_iter': 10000, 'tol': 0.001}
+Fold=0, RMSE=0.8491065036139921
+Best parameters: {'alpha': 0.1, 'l1_ratio': 0.1, 'max_iter': 10000, 'tol': 0.001}
+Fold=1, RMSE=0.8281935333466821
+Best parameters: {'alpha': 0.01, 'l1_ratio': 0.9, 'max_iter': 10000, 'tol': 0.001}
+Fold=2, RMSE=0.836695611463773
+Best parameters: {'alpha': 0.1, 'l1_ratio': 0.1, 'max_iter': 10000, 'tol': 0.001}
+Fold=3, RMSE=0.8283874129359954
+Best parameters: {'alpha': 0.0001, 'l1_ratio': 0.1, 'max_iter': 10000, 'tol': 0.001}
+Fold=4, RMSE=0.8184764336253199
+Average RMSE using kmeans for binning the MedHouseVal: 0.8321718989971526
+```
+
+Elastic Net Regression has a lowest average RMSE compared to Ridge and Lasso Regression. This is expected as Elastic Net combines the penalties of Lasso and Ridge Regression, which allows it to perform better in handling multicollinearity and feature selection.
