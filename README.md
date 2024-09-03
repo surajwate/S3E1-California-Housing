@@ -24,7 +24,8 @@ The goal of this project is to build a robust machine-learning model to predict 
 
 The dataset used in this project is provided by the [Kaggle Playground Series](https://www.kaggle.com/competitions/playground-series-s3e1). It contains features like `longitude`, `latitude`, `housing_median_age`, `total_rooms`, `total_bedrooms`, `population`, `households`, `median_income`, and the target variable `median_house_value`.
 
-### Files:
+### Files
+
 - `train.csv`: Training dataset containing features and target variables.
 - `test.csv`: Test dataset to make predictions for submission.
 - `sample_submission.csv`: Sample submission file format.
@@ -68,18 +69,21 @@ The repository is organized as follows:
 To run this project locally, follow these steps:
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/surajwate/S3E1-California-Housing.git
    cd S3E1-California-Housing
    ```
 
 2. **Set up a virtual environment** (optional but recommended):
+
    ```bash
    python -m venv env
    source env/bin/activate  # On Windows use `env\Scripts\activate`
    ```
 
 3. **Install the required packages**:
+
    ```bash
    pip install -r requirements.txt
    ```
